@@ -1,4 +1,4 @@
-import { Categories, Container, Filters, SortPopup, Title, TopBar } from "@/components/shared";
+import { Container, Filters, Title, TopBar } from "@/components/shared";
 // import { Button } from "@/components/ui/button";
 // import Image from "next/image";
 
