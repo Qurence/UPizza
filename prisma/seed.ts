@@ -61,7 +61,7 @@ async function up() {
         data: {
           name: 'Пепперони фреш',
           imageUrl:
-            'public/img/pizza/Пепперони фреш.webp',
+            '/img/pizza/Пепперони фреш.webp',
           categoryId: 1,
           ingredients: {
             connect: ingredients.slice(0, 5),
@@ -73,7 +73,7 @@ async function up() {
         data: {
           name: 'Сирна',
           imageUrl:
-            'public/img/pizza/Сирна.webp',
+            '/img/pizza/Сирна.webp',
           categoryId: 1,
           ingredients: {
             connect: ingredients.slice(5, 10),
@@ -85,7 +85,7 @@ async function up() {
         data: {
           name: 'Чоризо фреш',
           imageUrl:
-            'public/img/pizza/Чоризо фреш.webp',
+            '/img/pizza/Чоризо фреш.webp',
           categoryId: 1,
           ingredients: {
             connect: ingredients.slice(10, 40),
