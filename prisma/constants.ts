@@ -3,7 +3,7 @@ export const categories = [
         name: 'Піци',
     },
     {
-        name: 'Комбо',
+        name: 'Сніданок',
     },
     {
         name: 'Закуски',
