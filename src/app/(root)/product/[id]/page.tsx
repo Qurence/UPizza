@@ -3,6 +3,7 @@ import { prisma } from "../../../../../prisma/prisma-client";
 import { Container, GroupVariants, ProductImage, Title } from "@/components/shared";
 
 export default async function ProductPage({ params: { id } }: { params: { id: string } }) {
+  
   const product = await prisma.product.findFirst({ where: { id: Number(id) } });
   
   if (!product) {
