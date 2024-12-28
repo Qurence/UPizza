@@ -2,10 +2,15 @@ import { notFound } from "next/navigation";
 import { prisma } from "../../../../../prisma/prisma-client";
 import { Container, GroupVariants, ProductImage, Title } from "@/components/shared";
 
-export default async function ProductPage({ params: { id } }: { params: { id: string } }) {
-  
+export default async function ProductPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
+
+  const {
+    id
+  } = params;
+
   const product = await prisma.product.findFirst({ where: { id: Number(id) } });
-  
+
   if (!product) {
     return notFound();
   }
@@ -39,5 +44,4 @@ export default async function ProductPage({ params: { id } }: { params: { id: st
       </div>
     </div>
   </Container>
-
 }
