@@ -25,15 +25,24 @@ export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
           className={cn(
             "p-0 w-[1060px] max-w-[1060px] min-h-[500px] bg-white overflow-hideden",
             className
-          )}>
+          )}
+        >
           <VisuallyHidden>
             <DialogTitle>Dialog Title</DialogTitle>
           </VisuallyHidden>
 
           {isPizzaForm ? (
-            <ChoosePizzaForm imageUrl={product.imageUrl} name={product.name} ingredients={[]} />
+            <ChoosePizzaForm
+              imageUrl={product.imageUrl}
+              name={product.name}
+              ingredients={product.ingredients}
+              items={product.items}
+            />
           ) : (
-            <ChooseProductForm imageUrl={product.imageUrl} name={product.name} />
+            <ChooseProductForm
+              imageUrl={product.imageUrl}
+              name={product.name}
+            />
           )}
         </DialogContent>
       </Dialog>

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "../../../../../prisma/prisma-client";
-import { Container, GroupVariants, ProductImage, Title } from "@/components/shared";
+import { Container, GroupVariants, PizzaImage, Title } from "@/components/shared";
 
 export default async function ProductPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -17,7 +17,7 @@ export default async function ProductPage(props: { params: Promise<{ id: string 
 
   return <Container className="flex flex-col my-10">
     <div className="flex flex-1">
-      <ProductImage imageUrl={product.imageUrl} size={40} />
+      <PizzaImage imageUrl={product.imageUrl} size={40} />
 
       <div className="w-[490px] bg-[#f7f6f5] p-7">
         <Title text={product.name} size="md" className="font-extrabold mb-1" />
@@ -25,7 +25,7 @@ export default async function ProductPage(props: { params: Promise<{ id: string 
 
         
         <GroupVariants 
-        selectedValue="2"
+        value="2"
         items={[
           {
           name: 'Маленька',
