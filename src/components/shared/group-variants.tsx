@@ -20,7 +20,7 @@ export const GroupVariants: React.FC<Props> = ({ items, onClick, className, valu
     <div
       className={cn(
         className,
-        "flex justify-between bg-[#F3F3F7] rounded-3xl p-1 select-none"
+        "flex justify-between  bg-[hsl(var(--destructive-foreground))] rounded-3xl p-1 select-none"
       )}
     >
       {
@@ -30,7 +30,7 @@ export const GroupVariants: React.FC<Props> = ({ items, onClick, className, valu
             className={cn(
                 'flex items-center justify-center cursor-pointer h-[30px] px-5 flex-1 rounded-3xl transition-all duration-400 text-sm',
                 {
-                    'bg-white shadow': item.value === value,
+                    ' bg-[hsl(var(--muted))] shadow': item.value === value,
                     'text-gray-500 opacity-50 pointer-events-none': item.disabled,
                   },
             )}

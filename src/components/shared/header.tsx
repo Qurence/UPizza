@@ -6,6 +6,7 @@ import { Button } from '../ui';
 import { ArrowRight, ShoppingCart, User } from 'lucide-react';
 import Link from 'next/link';
 import { SearchInput } from './search-input';
+import { ThemeSwitcher } from './theme-switcher';
 
 interface Props {
   className?: string;
@@ -36,6 +37,7 @@ export const Header: React.FC<Props> = ({ className }) => {
 
                 {/* Правая часть */}
                 <div className="flex items-center gap-3">
+                    <ThemeSwitcher />
                     <Button variant={'outline'} className='flex items-center gap-1'>
                     <User size={16}/>
                         Увійти
