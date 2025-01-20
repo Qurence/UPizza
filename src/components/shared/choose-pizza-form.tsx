@@ -40,7 +40,6 @@ export const ChoosePizzaForm: React.FC<Props> = ({
   const pizzaPrice = items.find((item) => item.pizzaType === type && item.size === size)?.price || 0;
   const totalIngredientsPrice = ingredients .filter((ingredient) => selectedIngredients.has(ingredient.id)) .reduce((total, ingredient) => total + ingredient.price, 0);
   const totalPrice = pizzaPrice + totalIngredientsPrice;
-
   const textDetaills = `${size} см, ${mapPizzaType[type]} `;
 
   const filteredPizzasByType = items.filter((item) => item.pizzaType === type);

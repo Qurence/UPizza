@@ -72,19 +72,10 @@ html.dark {
     --ring: 220 15% 50%;
     --background: 220 10% 10%;
     --text-color: 220 15% 90%;
-  /* --color-bg: var(--color-bg-dark);
-  --color-text: var(--color-text-dark); */
+
 }
 
-/* html.light {
-  --color-bg: var(--color-bg-light);
-  --color-text: var(--color-text-light);
-}
 
-body { 
-  color: var(--color-text);
-  background-color: var(--color-bg);
-} */
 
 * {
   font-family: var(--font-nunito), sans-serif;
