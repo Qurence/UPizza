@@ -1,4 +1,3 @@
-import { CartButton } from './cart-button';
 export { Container } from './container';
 export { Header } from './header';
 export { Title } from './title';
@@ -19,3 +18,6 @@ export { ChooseProductForm } from './choose-product-form';
 export { IngredientItem } from './ingredient-item';
 export { CartButton } from './cart-button';
 export { CartDrawer } from './cart-drawer';
+export { CartDrawerItem } from './cart-drawer-item';
+export { CountIconButton } from './count-icon-button';
+export { CountButton } from './count-button';

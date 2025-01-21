@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+"use client";
 import React from "react";
 import {
   Sheet,
@@ -12,6 +13,9 @@ import {
 import Link from "next/link";
 import { Button } from "../ui";
 import { ArrowRight } from "lucide-react";
+import { CartDrawerItem } from "./cart-drawer-item";
+import { get } from "http";
+import { getCartItemDetails } from "@/lib";
 interface Props {
   className?: string;
 }
@@ -32,6 +36,24 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
         </SheetHeader>
 
         {/* Items */}
+        <div className="-mx-6 mt-5 overflow-auto flex-1">
+          <div className="mb-2">
+            <CartDrawerItem
+                id={1}
+                imageUrl={
+                "http://26.26.250.12:3000/img/pizza/%D0%A7%D0%BE%D1%80%D0%B8%D0%B7%D0%BE%20%D1%84%D1%80%D0%B5%D1%88.webp"
+                }
+                details={getCartItemDetails(2, 30, [
+                { name: "Помідори" },
+                { name: "Сир" },
+                ])}
+                name={"Чоризо фреш"}
+                price={124}
+                quantity={1}
+            />
+          </div>
+        </div>
+
         <SheetFooter className="-mx-6 bg-[hsl(var(--popover))] p-8">
           <div className="w-full">
             <div className="flex mb-4">
