@@ -2,6 +2,7 @@
 import { create } from "zustand";
 import { Api } from "../services/api-client";
 import { getCartDetails } from "@/lib";
+import { CartStateItem } from "@/lib/get-cart-details";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -10,7 +11,7 @@ export interface CartState {
   loading: boolean;
   error: boolean;
   totalAmount: number;
-  items: ICartItem[];
+  items: CartStateItem[];
 
   /* Получение товаров из корзины */
   fetchCartItems: () => Promise<void>;
