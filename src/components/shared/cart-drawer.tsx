@@ -16,6 +16,8 @@ import { ArrowRight } from "lucide-react";
 import { CartDrawerItem } from "./cart-drawer-item";
 import { get } from "http";
 import { getCartItemDetails } from "@/lib";
+import { useCartStore } from "../../../store/";
+import { PizzaSize, PizzaType } from "../../../constants/pizza";
 interface Props {
   className?: string;
 }
@@ -24,6 +26,21 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
   children,
   className,
 }) => {
+  //! Баг The result of getServerSnapshot should be cached to avoid an infinite loop
+  // const [totalAmount, fetchCartItems, items] = useCartStore((state) => [
+  //   state.totalAmount,
+  //   state.fetchCartItems,
+  //   state.items
+  // ]);
+  //! Исправлено, значения по отдельности, проблема в getSnapshot
+  const totalAmount = useCartStore((state) => state.totalAmount);
+  const fetchCartItems = useCartStore((state) => state.fetchCartItems);
+  const items = useCartStore((state) => state.items);
+
+  React.useEffect(() => {
+    fetchCartItems();
+  }, []);
+
   return (
     <Sheet>
       <SheetTrigger asChild>{children}</SheetTrigger>
@@ -35,22 +52,28 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
           </SheetTitle>
         </SheetHeader>
 
-        {/* Items */}
+        {/* Items! */}
         <div className="-mx-6 mt-5 overflow-auto flex-1">
           <div className="mb-2">
-            <CartDrawerItem
-                id={1}
-                imageUrl={
-                "http://26.26.250.12:3000/img/pizza/%D0%A7%D0%BE%D1%80%D0%B8%D0%B7%D0%BE%20%D1%84%D1%80%D0%B5%D1%88.webp"
+            {items.map((item) => (
+              <CartDrawerItem
+                key={item.id}
+                id={item.id}
+                imageUrl={item.imageUrl}
+                details={
+                  item.pizzaSize && item.pizzaType
+                    ? getCartItemDetails(
+                        item.ingredients,
+                        item.pizzaType as PizzaType,
+                        item.pizzaSize as PizzaSize
+                      )
+                    : ""
                 }
-                details={getCartItemDetails(2, 30, [
-                { name: "Помідори" },
-                { name: "Сир" },
-                ])}
-                name={"Чоризо фреш"}
-                price={124}
-                quantity={1}
-            />
+                name={item.name}
+                price={item.price}
+                quantity={item.quantity}
+              />
+            ))}
           </div>
         </div>
 
@@ -62,7 +85,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
                 <div className="flex-1 border-b border-dashed border-b-neutral-200 relative -top-1 mx-2" />
               </span>
 
-              <span className="font-bold text-lg">200 ₴</span>
+              <span className="font-bold text-lg">{totalAmount} ₴</span>
             </div>
             <Link href="/cart">
               <Button

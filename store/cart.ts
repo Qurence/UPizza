@@ -6,7 +6,6 @@ import { CartStateItem } from "@/lib/get-cart-details";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-
 export interface CartState {
   loading: boolean;
   error: boolean;
