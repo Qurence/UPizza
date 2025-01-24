@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  devIndicators: {
+    // buildActivity: false, // Отключает индикатор активности сборки
+  },
 };
 
 export default nextConfig;
