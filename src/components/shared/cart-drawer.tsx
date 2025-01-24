@@ -41,6 +41,10 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
     fetchCartItems();
   }, []);
 
+  const onClickCountButton = (id: number, quantity: number, type: "plus" | "minus") => {
+    console.log(id, quantity, type);  
+  };
+
   return (
     <Sheet>
       <SheetTrigger asChild>{children}</SheetTrigger>
@@ -48,7 +52,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
       <SheetContent className="flex flex-col justify-between pb-0 bg-[hsl(var(--muted))]">
         <SheetHeader>
           <SheetTitle>
-            У кошику <span className="font-bold">3 товари</span>
+            У кошику <span className="font-bold">{items.length} товари</span>
           </SheetTitle>
         </SheetHeader>
 
@@ -72,6 +76,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
                 name={item.name}
                 price={item.price}
                 quantity={item.quantity}
+                onClickCountButton={(type) => onClickCountButton(item.id, item.quantity, type)}
               />
             ))}
           </div>
