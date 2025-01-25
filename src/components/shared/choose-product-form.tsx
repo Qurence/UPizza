@@ -1,5 +1,6 @@
+ 
 /* eslint-disable @next/next/no-img-element */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
  
 import { cn } from '@/lib/utils';
 import React from 'react';
@@ -9,18 +10,23 @@ import { Button } from '../ui';
 interface Props {
   imageUrl: string;
   name: string;
-  onClickAdd?: VoidFunction;
+  price: number;
+  onSubmit?: VoidFunction;
   className?: string;
 }
 
+/**
+ * Форма выбора продукта
+ */
 export const ChooseProductForm: React.FC<Props> = ({
   name,
   imageUrl,
-  onClickAdd,
+  price,
+  onSubmit,
   className,
 }) => {
-    const textDetaills = '30 см, традиційне тісто 30';
-    const totalPrice = 120;
+    // const textDetaills = '30 см, традиційне тісто 30';
+    // const totalPrice = 120;
   return (
     <div className={cn(className, "flex flex-1")}>
       <div className="flex items-center justify-center flex-1 relative w-full">
@@ -34,10 +40,10 @@ export const ChooseProductForm: React.FC<Props> = ({
       <div className="w-[490px] bg-muted p-7 rounded-r-[18px]">
         <Title text={name} size="md" className="font-extrabold mb-1" />
 
-        <p className="text-gray-400">{textDetaills}</p>
+        {/* <p className="text-gray-400">{textDetaills}</p> */}
 
-        <Button className="h-[55px] px-10 text-white rounded-[18px] w-full mt-10">
-          Добавить в корзину за {totalPrice} ₴
+        <Button onClick={onSubmit} className="h-[55px] px-10 text-white rounded-[18px] w-full mt-10">
+          Добавить в корзину за {price} ₴
         </Button>
       </div>
     </div>

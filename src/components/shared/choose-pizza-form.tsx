@@ -1,3 +1,4 @@
+ 
  import { cn } from "@/lib/utils";
 import React from "react";
 import { PizzaImage } from "./pizza-image";
@@ -15,28 +16,33 @@ interface Props {
   name: string;
   ingredients: Ingredient[];
   items: ProductItem[];
-  onClickAddCart?: VoidFunction;
+  onSubmit: (itemId: number, ingredients: number[]) => void;
   className?: string;
 }
 
+/**
+ * Форма выбора пиццы
+ */
 export const ChoosePizzaForm: React.FC<Props> = ({
   name,
   items,
   imageUrl,
   ingredients,
-  onClickAddCart,
+  onSubmit,
   className,
 }) => {
-  const {size, type, selectedIngredients, availableSizes, setSize, setType, addIngredient} = usePizzaOptions(items)
+  const {size, type, selectedIngredients, availableSizes, currentItemId, setSize, setType, addIngredient} = usePizzaOptions(items)
   const {textDetaills, totalPrice} = getPizzaDetails(type, size, items, ingredients, selectedIngredients);
 
   const handleClickAdd = () => {
-    onClickAddCart?.();
-    console.log({
-      size,
-      type,
-      ingredients: selectedIngredients,
-    });
+    if (currentItemId) {
+      onSubmit(currentItemId, Array.from(selectedIngredients));
+    }
+    // console.log({
+    //   size,
+    //   type,
+    //   ingredients: selectedIngredients,
+    // });
   };
 
   return (
