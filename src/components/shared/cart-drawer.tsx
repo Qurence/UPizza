@@ -34,15 +34,18 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
   // ]);
   //! Исправлено, значения по отдельности, проблема в getSnapshot
   const totalAmount = useCartStore((state) => state.totalAmount);
-  const fetchCartItems = useCartStore((state) => state.fetchCartItems);
   const items = useCartStore((state) => state.items);
+  const fetchCartItems = useCartStore((state) => state.fetchCartItems);
+  const updateItemQuantity = useCartStore((state) => state.updateItemQuantity);
+  const removeCartItem = useCartStore((state) => state.removeCartItem);
 
   React.useEffect(() => {
     fetchCartItems();
-  }, []);
+  }, []); //, [fetchCartItems] -- FIX Infinity Request
 
   const onClickCountButton = (id: number, quantity: number, type: "plus" | "minus") => {
-    console.log(id, quantity, type);  
+    const newQuantity = type === "plus" ? quantity + 1 : quantity - 1;  
+    updateItemQuantity(id, newQuantity);
   };
 
   return (
@@ -58,10 +61,10 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
 
         {/* Items! */}
         <div className="-mx-6 mt-5 overflow-auto flex-1">
-          <div className="mb-2">
             {items.map((item) => (
               <CartDrawerItem
                 key={item.id}
+                className={"mb-2"}
                 id={item.id}
                 imageUrl={item.imageUrl}
                 details={
@@ -77,9 +80,9 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
                 price={item.price}
                 quantity={item.quantity}
                 onClickCountButton={(type) => onClickCountButton(item.id, item.quantity, type)}
+                onClickRemoveButton={() => removeCartItem(item.id)}
               />
             ))}
-          </div>
         </div>
 
         <SheetFooter className="-mx-6 bg-[hsl(var(--popover))] p-8">
