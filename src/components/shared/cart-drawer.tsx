@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React from "react";
@@ -48,6 +49,8 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
     updateItemQuantity(id, newQuantity);
   };
 
+  const totalQuantity = items.reduce((total, item) => total + item.quantity, 0);
+
   return (
     <Sheet>
       <SheetTrigger asChild>{children}</SheetTrigger>
@@ -55,7 +58,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
       <SheetContent className="flex flex-col justify-between pb-0 bg-[hsl(var(--muted))]">
         <SheetHeader>
           <SheetTitle>
-            У кошику <span className="font-bold">{items.length} товари</span>
+            У кошику <span className="font-bold">{totalQuantity} товари</span>
           </SheetTitle>
         </SheetHeader>
 

@@ -1,5 +1,3 @@
- 
- 
 'use client';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
@@ -10,6 +8,7 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { ProductWithRelations } from '../../../../@types/prisma';
 import { ChoosePizzaForm } from '../choose-pizza-form';
 import { useCartStore } from '../../../../store';
+import toast from 'react-hot-toast';
 
 interface Props {
     product: ProductWithRelations;
@@ -21,19 +20,51 @@ export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
   const firstItem = product.items[0];
   const isPizzaForm = Boolean(product.items[0].pizzaType);
   const addCartItem = useCartStore((state) => state.addCartItem);
+  const loading = useCartStore((state) => state.loading);
 
-  const onAddProduct = () => {
-    addCartItem({
-      productItemId: firstItem.id,
-    });
-  };
+  // const onAddProduct = () => {
+  //   try {
+  //     addCartItem({
+  //       productItemId: firstItem.id,
+  //     });
+  //     toast.success(`${product.name} додано до кошику`);
+  //     router.back();
+  //   } catch (error) {
+  //     toast.error('Не вдалося додати продукт до кошику');
+  //     console.error(error);
+  //   }
+  // };
 
-  const onAddPizza = (productItemId: number, ingredients: number[]) => {
-    addCartItem({
-      productItemId,
-      ingredients,
-    });
-  };
+  // const onAddPizza = async (productItemId: number, ingredients: number[]) => {
+  //   try {
+  //     await addCartItem({
+  //       productItemId,
+  //       ingredients,
+  //     });
+  //     toast.success(`Піцу "${product.name}" додано до кошику`);
+  //     router.back();
+  //   } catch (error) {
+  //     toast.error('Не вдалося додати піцу до кошику');
+  //     console.error(error);
+  //   }
+  // };
+
+  const onSubmit = async (productItemId?: number, ingredients?: number[]) => {
+    try {
+      const itemId = productItemId ?? firstItem.id;
+
+      await addCartItem({
+        productItemId: itemId,
+        ingredients,
+      });
+      toast.success(`${product.name} додано до кошику`);
+      router.back();
+    } catch (error) {
+      toast.error(`Не вдалося додати ${product.name} до кошику`);
+      console.error(error);
+      
+    }
+  }
 
   return (
     <div className={className}>
@@ -54,14 +85,16 @@ export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
               name={product.name}
               ingredients={product.ingredients}
               items={product.items}
-              onSubmit={onAddPizza}
+              onSubmit={onSubmit}
+              loading={loading}
             />
           ) : (
             <ChooseProductForm
               imageUrl={product.imageUrl}
               name={product.name}
-              onSubmit={onAddProduct}
+              onSubmit={onSubmit}
               price={firstItem.price}
+              loading={loading}
             />
           )}
         </DialogContent>

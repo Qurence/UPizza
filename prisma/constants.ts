@@ -161,13 +161,13 @@ export const products = [
       {
         name: 'Банановий молочний коктейль',
         imageUrl:
-          '/img/products/Банановий молочний коктейль.jpg',
+          '/img/products/Банановий молочний коктейль.png',
         categoryId: 4,
       },
       {
         name: 'Карамельне яблуко молочний коктейль',
         imageUrl:
-          '/img/products/Карамельне яблуко молочний коктейль.jpg',
+          '/img/products/Карамельне яблуко молочний коктейль.png',
         categoryId: 4,
       },
       {
