@@ -27,6 +27,7 @@ export const ProductCard: React.FC<Props> = ({ id, name, price, imageUrl, classN
         <Title text={name} size="sm" className="mb-1 mt-3 font-bold" />
 
         <p className='text-sm text-gray-400'>
+          
           Курча, моцарелла, сири чеддер та пармезан, сирний соус, томати, соус альфредо, часник
         </p>
 

@@ -19,7 +19,7 @@ export default async function ProductPage(props: { params: Promise<{ id: string 
     <div className="flex flex-1">
       <PizzaImage imageUrl={product.imageUrl} size={40} />
 
-      <div className="w-[490px] bg-[#f7f6f5] p-7">
+      <div className="w-[490px] bg-[hsl(var(--muted))] rounded-[18px] p-7">
         <Title text={product.name} size="md" className="font-extrabold mb-1" />
         <p className="text-gray-400">Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro at ducimus modi!</p>
 
