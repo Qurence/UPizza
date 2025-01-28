@@ -12,8 +12,6 @@ html {
   }
 }
 
-
-
 @layer base {
   :root {
     --foreground: 20 14.3% 4.1%;
@@ -39,6 +37,8 @@ html {
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 60 9.1% 97.8%;
 
+    --background: 255, 255%, 255%;
+    
     --border: 20 5.9% 90%;
     --input: 0 0% 90%;
     --ring: 24.6 95% 53.1%;
@@ -53,29 +53,26 @@ html {
 
 html.dark {
   --foreground: 60 9.1% 97.8%;
-    --card: 220 15% 10%;
-    --card-foreground: 60 9.1% 97.8%;
-    --popover: 220 15% 10%;
-    --popover-foreground: 60 9.1% 97.8%;
-    --primary: 22 100% 60%;
-    --primary-foreground: 0 0% 10%;
-    --secondary: 210 5% 25%;
-    --secondary-foreground: 60 9.1% 97.8%;
-    --muted: 210 5% 25%;
-    --muted-foreground: 60 9.1% 97.8%;
-    --accent: 220 10% 40%;
-    --accent-foreground: 60 9.1% 97.8%;
-    --destructive: 0 84.2% 55%;
-    --destructive-foreground: 0 0% 10%;
-    --border: 220 10% 30%;
-    --input: 220 10% 20%;
-    --ring: 220 15% 50%;
-    --background: 220 10% 10%;
-    --text-color: 220 15% 90%;
-
+  --card: 220 15% 10%;
+  --card-foreground: 60 9.1% 97.8%;
+  --popover: 220 15% 10%;
+  --popover-foreground: 60 9.1% 97.8%;
+  --primary: 22 100% 60%;
+  --primary-foreground: 0 0% 10%;
+  --secondary: 210 5% 25%;
+  --secondary-foreground: 60 9.1% 97.8%;
+  --muted: 210 5% 25%;
+  --muted-foreground: 60 9.1% 97.8%;
+  --accent: 220 10% 40%;
+  --accent-foreground: 60 9.1% 97.8%;
+  --destructive: 0 84.2% 55%;
+  --destructive-foreground: 0 0% 10%;
+  --border: 220 10% 30%;
+  --input: 220 10% 20%;
+  --ring: 220 15% 50%;
+  --background: 220 10% 10%;
+  --text-color: 220 15% 90%;
 }
-
-
 
 * {
   font-family: var(--font-nunito), sans-serif;

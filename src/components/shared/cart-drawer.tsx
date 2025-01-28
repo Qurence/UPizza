@@ -58,7 +58,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
       <SheetContent className="flex flex-col justify-between pb-0 bg-[hsl(var(--muted))]">
         <SheetHeader>
           <SheetTitle>
-            У кошику <span className="font-bold">{totalQuantity} товари</span>
+          У кошику <span className="font-bold">{totalQuantity} {totalQuantity === 1 ? 'товар' : 'товари'}</span>
           </SheetTitle>
         </SheetHeader>
 

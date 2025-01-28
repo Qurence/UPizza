@@ -57,7 +57,11 @@ export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
         productItemId: itemId,
         ingredients,
       });
-      toast.success(`${product.name} додано до кошику`);
+      if (isPizzaForm) {
+        toast.success(`Піццу "${product.name}" додано до кошику`);
+      }else{
+        toast.success(`${product.name} додано до кошику`);
+      }
       router.back();
     } catch (error) {
       toast.error(`Не вдалося додати ${product.name} до кошику`);
