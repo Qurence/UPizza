@@ -1,20 +1,20 @@
-'use client';
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
-import { cn } from '@/lib/utils';
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
-import { ProductWithRelations } from '../../../../@types/prisma';
-import { ProductForm } from '../product-form';
+"use client";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
+import React from "react";
+import { useRouter } from "next/navigation";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { ProductWithRelations } from "../../../../@types/prisma";
+import { ProductForm } from "../product-form";
 
 interface Props {
-    product: ProductWithRelations;
-    className?: string;
+  product: ProductWithRelations;
+  className?: string;
 }
 
 export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
   const router = useRouter();
-  
+
   // const onAddProduct = () => {
   //   try {
   //     addCartItem({
@@ -42,8 +42,6 @@ export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
   //   }
   // };
 
-
-
   return (
     <div className={className}>
       <Dialog open={Boolean(product)} onOpenChange={() => router.back()}>
@@ -58,10 +56,8 @@ export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
           </VisuallyHidden>
 
           <ProductForm product={product} onSubmit={router.back} />
-          
         </DialogContent>
       </Dialog>
     </div>
   );
 };
-
