@@ -3,12 +3,9 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { ChooseProductForm } from '../choose-product-form';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { ProductWithRelations } from '../../../../@types/prisma';
-import { ChoosePizzaForm } from '../choose-pizza-form';
-import { useCartStore } from '../../../../store';
-import toast from 'react-hot-toast';
+import { ProductForm } from '../product-form';
 
 interface Props {
     product: ProductWithRelations;
@@ -17,11 +14,7 @@ interface Props {
 
 export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
   const router = useRouter();
-  const firstItem = product.items[0];
-  const isPizzaForm = Boolean(product.items[0].pizzaType);
-  const addCartItem = useCartStore((state) => state.addCartItem);
-  const loading = useCartStore((state) => state.loading);
-
+  
   // const onAddProduct = () => {
   //   try {
   //     addCartItem({
@@ -49,26 +42,7 @@ export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
   //   }
   // };
 
-  const onSubmit = async (productItemId?: number, ingredients?: number[]) => {
-    try {
-      const itemId = productItemId ?? firstItem.id;
 
-      await addCartItem({
-        productItemId: itemId,
-        ingredients,
-      });
-      if (isPizzaForm) {
-        toast.success(`Піццу "${product.name}" додано до кошику`);
-      }else{
-        toast.success(`${product.name} додано до кошику`);
-      }
-      router.back();
-    } catch (error) {
-      toast.error(`Не вдалося додати ${product.name} до кошику`);
-      console.error(error);
-      
-    }
-  }
 
   return (
     <div className={className}>
@@ -83,24 +57,8 @@ export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
             <DialogTitle>Dialog Title</DialogTitle>
           </VisuallyHidden>
 
-          {isPizzaForm ? (
-            <ChoosePizzaForm
-              imageUrl={product.imageUrl}
-              name={product.name}
-              ingredients={product.ingredients}
-              items={product.items}
-              onSubmit={onSubmit}
-              loading={loading}
-            />
-          ) : (
-            <ChooseProductForm
-              imageUrl={product.imageUrl}
-              name={product.name}
-              onSubmit={onSubmit}
-              price={firstItem.price}
-              loading={loading}
-            />
-          )}
+          <ProductForm product={product} onSubmit={router.back} />
+          
         </DialogContent>
       </Dialog>
     </div>

@@ -6,13 +6,15 @@ import toast from "react-hot-toast";
 import { ProductWithRelations } from "../../../@types/prisma";
 import { ChooseProductForm } from "./choose-product-form";
 import { ChoosePizzaForm } from "./choose-pizza-form";
+import { Router } from "next/router";
 
 interface Props {
   product: ProductWithRelations;
+  onSubmit?: VoidFunction;
   className?: string;
 }
 
-export const ProductForm: React.FC<Props> = ({ product, className }) => {
+export const ProductForm: React.FC<Props> = ({ product, onSubmit: _onSubmit }) => {
   const addCartItem = useCartStore((state) => state.addCartItem);
   const loading = useCartStore((state) => state.loading);
   const firstItem = product.items[0];
@@ -30,6 +32,7 @@ export const ProductForm: React.FC<Props> = ({ product, className }) => {
       } else {
         toast.success(`${product.name} додано до кошику`);
       }
+      _onSubmit?.();
     } catch (error) {
       toast.error(`Не вдалося додати ${product.name} до кошику`);
       console.error(error);
