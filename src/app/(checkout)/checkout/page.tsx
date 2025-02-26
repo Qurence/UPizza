@@ -1,14 +1,32 @@
+"use client";
+
 import {
   CheckoutItem,
-  CheckoutItemDetails,
+  CheckoutSidebar,
   Container,
   Title,
   WhiteBlock,
 } from "@/components/shared";
-import { Button, Input, Textarea } from "@/components/ui";
-import { ArrowRight, Package, Truck } from "lucide-react";
+import {Input, Textarea } from "@/components/ui";
+import { useCart } from "../../../../hooks";
+import { getCartItemDetails } from "@/lib";
+import { PizzaSize, PizzaType } from "../../../../constants/pizza";
+
 
 export default function CheckoutLayout() {
+  const { totalAmount, updateItemQuantity, items, removeCartItem } = useCart();
+
+  const onClickCountButton = (
+    id: number,
+    quantity: number,
+    type: "plus" | "minus"
+  ) => {
+    const newQuantity = type === "plus" ? quantity + 1 : quantity - 1;
+    updateItemQuantity(id, newQuantity);
+  };
+
+
+
   return (
     <Container className="mt-10">
       <Title
@@ -21,8 +39,26 @@ export default function CheckoutLayout() {
         <div className="flex flex-col gap-10 flex-1 mb-20">
           <WhiteBlock className="p-6" title="1. Кошик">
             <div className="flex flex-col gap-5">
-              <CheckoutItem id={1} imageUrl={"/img/products/Сендвіч з шинкою і сиром.webp"} details={"lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum"} name={"Сендвіч з шинкою і сиром"} price={200} quantity={2} />
-              <CheckoutItem id={1} imageUrl={"/img/products/Сендвіч з шинкою і сиром.webp"} details={"lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum"} name={"Сендвіч з шинкою і сиром"} price={100} quantity={1} />
+              {items.map((item) => (
+                <CheckoutItem
+                  key={item.id}
+                  id={item.id}
+                  imageUrl={item.imageUrl}
+                  details={getCartItemDetails(
+                    item.ingredients,
+                    item.pizzaType as PizzaType,
+                    item.pizzaSize as PizzaSize
+                  )}
+                  name={item.name}
+                  price={item.price}
+                  quantity={item.quantity}
+                  disabled={item.disabled}
+                  onClickCountButton={(type) =>
+                    onClickCountButton(item.id, item.quantity, type)
+                  }
+                  onClickRemoveButton={() => removeCartItem(item.id)}
+                />
+              ))}
             </div>
           </WhiteBlock>
           <WhiteBlock className="p-6" title="2. Особисті дані">
@@ -59,38 +95,7 @@ export default function CheckoutLayout() {
 
         {/* Right side */}
         <div className="w-[450px]">
-          <WhiteBlock className="p-6 sticky top-4">
-            <div className="flex flex-col gap-1">
-              <span className="text-xl">Разом:</span>
-              <span className="text-[34px] font-extrabold">1200 ₴</span>
-            </div>
-            <CheckoutItemDetails
-              title={
-                <div className="flex items-center">
-                  <Package size={18} className="mr-2" />
-                  Вартість товарів
-                </div>
-              }
-              value="1000"
-            />
-            <CheckoutItemDetails
-              title={
-                <div className="flex items-center">
-                  <Truck size={18} className="mr-2" />
-                  Доставка
-                </div>
-              }
-              value="70"
-            />
-
-            <Button
-              type="submit"
-              className="w-full h-14 rounded-2xl mt-6 text-base font-bold"
-            >
-              Перейти до оплати
-              <ArrowRight className="w-5 ml-2" />
-            </Button>
-          </WhiteBlock>
+          <CheckoutSidebar totalAmount={totalAmount} />
         </div>
       </div>
     </Container>
