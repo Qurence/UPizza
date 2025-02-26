@@ -1,4 +1,5 @@
 import {
+  CheckoutItem,
   CheckoutItemDetails,
   Container,
   Title,
@@ -19,7 +20,10 @@ export default function CheckoutLayout() {
         {/* Left side */}
         <div className="flex flex-col gap-10 flex-1 mb-20">
           <WhiteBlock className="p-6" title="1. Кошик">
-            123
+            <div className="flex flex-col gap-5">
+              <CheckoutItem id={1} imageUrl={"/img/products/Сендвіч з шинкою і сиром.webp"} details={"lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum"} name={"Сендвіч з шинкою і сиром"} price={200} quantity={2} />
+              <CheckoutItem id={1} imageUrl={"/img/products/Сендвіч з шинкою і сиром.webp"} details={"lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum"} name={"Сендвіч з шинкою і сиром"} price={100} quantity={1} />
+            </div>
           </WhiteBlock>
           <WhiteBlock className="p-6" title="2. Особисті дані">
             <div className="grid grid-cols-2 gap-5">
@@ -79,7 +83,10 @@ export default function CheckoutLayout() {
               value="70"
             />
 
-            <Button type="submit" className="w-full h-14 rounded-2xl mt-6 text-base font-bold">
+            <Button
+              type="submit"
+              className="w-full h-14 rounded-2xl mt-6 text-base font-bold"
+            >
               Перейти до оплати
               <ArrowRight className="w-5 ml-2" />
             </Button>
