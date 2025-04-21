@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
-import { FormInput, WhiteBlock } from "..";
+import { FormInput, FormTextarea, WhiteBlock } from "..";
 import { Input, Textarea } from "@/components/ui";
 
 interface Props {
@@ -16,7 +16,8 @@ export const CheckoutAddressForm: React.FC<Props> = ({ className }) => {
           className="text-base"
           placeholder="Введіть адресу..."
         />
-        <Textarea
+        <FormTextarea
+          name="comment"
           className="text-base"
           placeholder="Коментар до заказу"
           rows={5}
