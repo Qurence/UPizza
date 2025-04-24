@@ -83,7 +83,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children, }) => 
           {/* Items! */}
           {totalAmount > 0 && (
             <>
-              <div className="-mx-6 mt-5 overflow-auto flex-1">
+              <div className="-mx-6 mt-5 overflow-auto flex-1 scrollbar">
                 {items.map((item) => (
                   <CartDrawerItem
                     key={item.id}
@@ -109,8 +109,8 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children, }) => 
                 ))}
               </div>
 
-              <SheetFooter className="-mx-6 bg-[hsl(var(--popover))] p-8">
-                <div className="w-full">
+              <SheetFooter className="-mx-6 bg-[hsl(var(--popover))] p-8 ">
+                <div className="w-full scrollbar">
                   <div className="flex mb-4">
                     <span className="flex flex-1 text-lg">
                       Разом

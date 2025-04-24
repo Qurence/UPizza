@@ -79,12 +79,12 @@ html.dark {
 }
 
 .scrollbar::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 
 .scrollbar::-webkit-scrollbar-track {
   border-radius: 6px;
-  background: #fff;
+  /* background: #fff; */
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
