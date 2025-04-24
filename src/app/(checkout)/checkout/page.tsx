@@ -6,6 +6,7 @@ import { CheckoutSidebar, Container, Title } from "@/components/shared";
 import { useCart } from "../../../../hooks";
 import { CheckoutAddressForm, CheckoutCart, CheckoutPersonalInfo, } from "@/components";
 import { checkoutFormSchema, ChecoutFormValues } from "@/../constants/checkout-form-schema";
+import { createOrder } from "@/app/actions";
 // import { loadGetInitialProps } from "next/dist/shared/lib/utils";
 
 
@@ -25,6 +26,7 @@ export default function CheckoutPage() {
 
   const onSubmit = (data: ChecoutFormValues) => {
     console.log(data);
+    createOrder(data);
   };
 
   const onClickCountButton = (
