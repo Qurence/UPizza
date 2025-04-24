@@ -1,7 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 import React from "react";
 import { AddressInput, ErrorText, FormTextarea, WhiteBlock } from "..";
 import { Controller, useFormContext } from "react-hook-form";
+import { cn } from "@/lib/utils";
 
 interface Props {
   className?: string;
@@ -11,7 +12,7 @@ export const CheckoutAddressForm: React.FC<Props> = ({ className }) => {
   const [address] = React.useState("");
   const { control } = useFormContext();
   return (
-    <WhiteBlock className="p-6" title="3. Адреса доставки">
+    <WhiteBlock className={cn("p-6", className)} title="3. Адреса доставки">
       <div className="flex flex-col gap-5">
         <Controller
           control={control}

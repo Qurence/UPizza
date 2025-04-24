@@ -2,27 +2,31 @@ import React from "react";
 import { WhiteBlock } from "./white-block";
 import { CheckoutItemDetails } from "./checkout-item-details";
 import { ArrowRight, Package, Truck } from "lucide-react";
-import { Button } from "../ui";
+import { Button, Skeleton } from "../ui";
 import { cn } from "@/lib/utils";
 
 const DELIVERY_PRICE = 70;
 
 interface Props {
   totalAmount: number;
+  loading?: boolean;
   className?: string;
 }
 
 export const CheckoutSidebar: React.FC<Props> = ({
   totalAmount,
+  loading,
   className,
 }) => {
   return (
     <WhiteBlock className={cn("p-6 sticky top-4", className)}>
       <div className="flex flex-col gap-1">
-        <span className="text-xl">Разом:</span>
-        <span className="text-[34px] font-extrabold">
+        <span className="h-11 text-xl">Разом:</span>
+        {
+          loading ? <Skeleton className="w-48 h-11"/> : <span className="text-[34px] font-extrabold">
           {totalAmount + DELIVERY_PRICE} ₴
         </span>
+        }
       </div>
       <CheckoutItemDetails
         title={
@@ -31,7 +35,7 @@ export const CheckoutSidebar: React.FC<Props> = ({
             Вартість кошику
           </div>
         }
-        value={`${totalAmount}`}
+        value={loading ? <Skeleton className="w-20 h-6"/> : `${totalAmount} ₴` }
       />
       <CheckoutItemDetails
         title={
@@ -40,16 +44,18 @@ export const CheckoutSidebar: React.FC<Props> = ({
             Доставка
           </div>
         }
-        value={`${DELIVERY_PRICE}`}
+        value={loading ? <Skeleton className="w-20 h-6"/> : `${DELIVERY_PRICE} ₴`}
       />
-
-      <Button
+      {
+        loading ? <Skeleton className="w-full h-14 mt-10"/> : <Button 
         type="submit"
-        className="w-full h-14 rounded-2xl mt-6 text-base font-bold"
+        className= "w-full h-14 rounded-2xl mt-6 text-base font-bold"
       >
         Перейти до оплати
         <ArrowRight className="w-5 ml-2" />
       </Button>
+      }
+      
     </WhiteBlock>
   );
 };

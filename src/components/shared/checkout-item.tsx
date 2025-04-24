@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { cn } from '@/lib/utils';
-import { X } from 'lucide-react';
-import { CartItemProps } from './cart-item-details/cart-item-details.types';
-import * as CartItemDetails from './cart-item-details';
+import React from "react";
+import { cn } from "@/lib/utils";
+import { X } from "lucide-react";
+import { CartItemProps } from "./cart-item-details/cart-item-details.types";
+import * as CartItemDetails from "./cart-item-details";
 
 interface Props extends CartItemProps {
-  onClickCountButton?: (type: 'plus' | 'minus') => void;
+  onClickCountButton?: (type: "plus" | "minus") => void;
   onClickRemoveButton?: () => void;
   className?: string;
 }
@@ -43,7 +43,7 @@ export const CheckoutItem: React.FC<Props> = ({
           onClick={onClickCountButton}
           value={quantity}
         />
-        <button onClick={onClickRemoveButton}>
+        <button type="button" onClick={onClickRemoveButton}>
           <X
             className="text-gray-400 cursor-pointer hover:text-gray-600"
             size={20}
