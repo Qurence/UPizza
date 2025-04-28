@@ -1,10 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 "use server";
-
 import { OrderStatus } from "@prisma/client";
 import { ChecoutFormValues } from "../../constants";
 import { prisma } from "../../prisma/prisma-client";
 import { cookies } from "next/headers";
+import { sendEmail } from "@/lib";
+import { PayOrderTemplate } from "@/components/shared";
 
 export async function createOrder(data: ChecoutFormValues) {
   try {
@@ -56,7 +57,8 @@ export async function createOrder(data: ChecoutFormValues) {
         comment: data.comment,
         totalAmount: userCart.totalAmount,
         status: OrderStatus.PENDING,
-        items: JSON.stringify(userCart.items),
+        items: JSON.stringify(userCart.items), 
+        // TODO: Перевірити UTF-8 в prisma, можливо прибрати кириллцю || пробелы
       },
     });
 
@@ -78,9 +80,18 @@ export async function createOrder(data: ChecoutFormValues) {
     });
 
     // TODO: Посилати на платіжну систему
-
+    
+    sendEmail(
+      data.email,
+      "UPizza | Замовлення №" + order.id,
+      PayOrderTemplate({
+        orderId: order.id,
+        totalAmount: order.totalAmount,
+        paymentUrl: "https://resend.com/docs/send-with-nextjs",
+      })
+    );
     
   } catch (error) {
-    console.error("Error creating order:", error);
+    console.error("[Create order] Server action error:", error);
   }
 }
