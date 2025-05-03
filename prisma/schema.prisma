@@ -140,6 +140,8 @@ model Order {
     phone       String
     comment     String?
 
+    orderReference String @unique
+
     createdAt   DateTime @default(now())
     updateAt    DateTime @updatedAt
 }

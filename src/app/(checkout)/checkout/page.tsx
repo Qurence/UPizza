@@ -18,6 +18,33 @@ import toast from "react-hot-toast";
 import React from "react";
 // import { loadGetInitialProps } from "next/dist/shared/lib/utils";
 
+function postToWayForPay(paymentData: Record<string, any>) {
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = 'https://secure.wayforpay.com/pay';
+
+  Object.entries(paymentData).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      value.forEach((item) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key + '[]';
+        input.value = item;
+        form.appendChild(input);
+      });
+    } else {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = value;
+      form.appendChild(input);
+    }
+  });
+
+  document.body.appendChild(form);
+  form.submit();
+}
+
 export default function CheckoutPage() {
   const [submitting, setSubmitting] = React.useState(false);
   const { totalAmount, updateItemQuantity, items, removeCartItem, loading } =
@@ -37,17 +64,20 @@ export default function CheckoutPage() {
   const onSubmit = async (data: ChecoutFormValues) => {
     try {
       setSubmitting(true);
-      const url = await createOrder(data);
+      const result = await createOrder(data);
+      
+      if (result.success && result.paymentData) {
       toast.success("Замовлення успішно створено! 📨 Перехід до оплати... ", {
         icon: "✅",
       });
-      if (url) {
-        location.href = url;
+        postToWayForPay(result.paymentData);
+      } else {
+        throw new Error(result.error || "Помилка створення замовлення");
       }
     } catch (error) {
       setSubmitting(false);
       toast.error(
-        "Помилка створення замовлення. Будь ласка, спробуйте пізніше.",
+        error instanceof Error ? error.message : "Помилка створення замовлення. Будь ласка, спробуйте пізніше.",
         {
           icon: "❌",
         }

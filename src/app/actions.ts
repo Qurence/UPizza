@@ -1,4 +1,3 @@
- 
 "use server";
 import { OrderStatus } from "@prisma/client";
 import { ChecoutFormValues } from "../../constants";
@@ -6,6 +5,8 @@ import { prisma } from "../../prisma/prisma-client";
 import { cookies } from "next/headers";
 import { sendEmail } from "@/lib";
 import { PayOrderTemplate } from "@/components/shared";
+import { getPaymentUrl } from "@/lib/wayforpay";
+import { createPaymentRequest } from "@/lib/wayforpay";
 
 export async function createOrder(data: ChecoutFormValues) {
   try {
@@ -13,10 +14,9 @@ export async function createOrder(data: ChecoutFormValues) {
     const cartToken = (await cookieStore).get("cartToken")?.value;
 
     if (!cartToken) {
-      throw new Error("Cart token not found in cookies.");
+      throw new Error("Не знайдено токен кошика. Будь ласка, спробуйте ще раз.");
     }
 
-    // Находження кошика за токеном
     const userCart = await prisma.cart.findFirst({
       include: {
         user: true,
@@ -36,18 +36,16 @@ export async function createOrder(data: ChecoutFormValues) {
       },
     });
 
-    // Якщо кошик не знайдено, викидаємо помилку
     if (!userCart) {
-      throw new Error("Cart not found.");
+      throw new Error("Кошик не знайдено. Будь ласка, спробуйте ще раз.");
     }
 
-    // Якщо загальна сума кошика дорівнює 0, викидаємо помилку
     if (userCart?.totalAmount === 0) {
-      throw new Error("Cart is empty.");
+      throw new Error("Кошик порожній. Додайте товари до кошика.");
     }
 
-    // Створення замовлення
-    const order = await prisma.order.create({
+    const order = await prisma.$transaction(async (tx) => {
+      const order = await tx.order.create({
       data: {
         token: cartToken,
         fullName: `${data.firstName} ${data.lastName}`,
@@ -57,13 +55,11 @@ export async function createOrder(data: ChecoutFormValues) {
         comment: data.comment,
         totalAmount: userCart.totalAmount,
         status: OrderStatus.PENDING,
-        items: JSON.stringify(userCart.items), 
-        // TODO: Перевірити UTF-8 в prisma, можливо прибрати кириллцю || пробелы
+        items: JSON.stringify(userCart.items),
       },
     });
 
-    // Якщо замовлення створено, очищаємо кошик
-    await prisma.cart.update({
+      await tx.cart.update({
       where: {
         id: userCart.id,
       },
@@ -72,26 +68,66 @@ export async function createOrder(data: ChecoutFormValues) {
       },
     });
 
-    // Очищення товарів у кошику
-    await prisma.cartItem.deleteMany({
+      await tx.cartItem.deleteMany({
       where: {
         cartId: userCart.id,
       },
     });
 
-    // TODO: Посилати на платіжну систему
-    
-    sendEmail(
+      return order;
+    });
+
+    // Генерируем уникальный orderReference для WayForPay
+    const orderReference = `${order.id}_${Date.now()}`;
+
+    const paymentRequest = createPaymentRequest({
+      orderId: orderReference, // используем уникальный orderReference
+      amount: order.totalAmount,
+      clientFirstName: data.firstName,
+      clientLastName: data.lastName,
+      clientEmail: data.email,
+      clientPhone: data.phone,
+      clientAddress: data.address,
+    });
+
+    console.log("Payment URL:", getPaymentUrl({
+      orderId: orderReference, // тоже уникальный orderReference
+      amount: order.totalAmount,
+      clientFirstName: data.firstName,
+      clientLastName: data.lastName,
+      clientEmail: data.email,
+      clientPhone: data.phone,
+      clientAddress: data.address,
+    }));
+
+    try {
+      await sendEmail(
       data.email,
       "UPizza | Замовлення №" + order.id,
       PayOrderTemplate({
         orderId: order.id,
         totalAmount: order.totalAmount,
-        paymentUrl: "https://resend.com/docs/send-with-nextjs",
+          paymentUrl: getPaymentUrl({
+            orderId: orderReference, // тоже уникальный orderReference
+            amount: order.totalAmount,
+            clientFirstName: data.firstName,
+            clientLastName: data.lastName,
+            clientEmail: data.email,
+            clientPhone: data.phone,
+            clientAddress: data.address,
+          }),
       })
     );
-    
+    } catch (emailError) {
+      console.error("[Send email] Error:", emailError);
+    }
+
+    return { success: true, paymentData: paymentRequest };
   } catch (error) {
     console.error("[Create order] Server action error:", error);
+    if (error instanceof Error) {
+      return { success: false, error: error.message };
+    }
+    return { success: false, error: "Сталася невідома помилка. Будь ласка, спробуйте ще раз." };
   }
 }
