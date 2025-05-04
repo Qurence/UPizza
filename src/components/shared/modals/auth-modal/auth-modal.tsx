@@ -1,3 +1,4 @@
+'use client'
 /* eslint-disable @next/next/no-img-element */
 import { Button } from "@/components/ui";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
@@ -70,12 +71,12 @@ export const AuthModal: React.FC<Props> = ({ open, onClose }) => {
           </Button>
         </div>
         <Button
-          variant={"default"}
+          variant={"outline"}
           onClick={onSwitchType}
           type="button"
           className="h-12"
         >
-          {type === "login" ? "Увійти" : "Зареєструватися"}
+          {type === "login" ? "Зареєструватися" : "Увійти"}
         </Button>
       </DialogContent>
     </Dialog>

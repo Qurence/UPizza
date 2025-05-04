@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
  "use client";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -53,6 +54,7 @@ export const LoginForm: React.FC<Props> = ({ onClose }) => {
             <Title text="Вхід в аккаунт" className="font-bold" size="md" />
             <p className="text-text-color">Введіть логін та пароль</p>
           </div>
+          <img src="/assets/images/phone-icon.png" alt="phone-icon" width={60} height={60} />
         </div>
         <FormInput
           name="email"

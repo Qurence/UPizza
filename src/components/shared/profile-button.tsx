@@ -29,7 +29,6 @@ export const ProfileButton: React.FC<Props> = ({
       ) : (
         <Link href={"/profile"} className="flex items-center gap-2">
           <Button
-            onClick={onClickSignIn}
             variant={"outline"}
             className="flex items-center gap-1"
           >

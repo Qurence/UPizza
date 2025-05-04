@@ -1,6 +1,6 @@
 import {z} from 'zod';
 
-export const passwordSchema = z.string().min(4, { message: 'Пароль має містити не менше 6 символів' });
+export const passwordSchema = z.string().min(4, { message: 'Пароль має містити не менше 4 символів' });
 
 export const formLoginSchema = z.object({
   email: z.string().email({ message: 'Введіть коректну електронну пошту' }),

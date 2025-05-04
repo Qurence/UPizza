@@ -1,5 +1,5 @@
 "use server";
-import { OrderStatus } from "@prisma/client";
+import { OrderStatus, Prisma } from "@prisma/client";
 import { ChecoutFormValues } from "../../constants";
 import { prisma } from "../../prisma/prisma-client";
 import { cookies } from "next/headers";
@@ -7,6 +7,8 @@ import { sendEmail } from "@/lib";
 import { PayOrderTemplate } from "@/components/shared";
 import { getPaymentUrl } from "@/lib/wayforpay";
 import { createPaymentRequest } from "@/lib/wayforpay";
+import { getUserSession } from "@/lib/get-user-session";
+import { hashSync } from "bcrypt";
 
 export async function createOrder(data: ChecoutFormValues) {
   try {
@@ -129,5 +131,36 @@ export async function createOrder(data: ChecoutFormValues) {
       return { success: false, error: error.message };
     }
     return { success: false, error: "Сталася невідома помилка. Будь ласка, спробуйте ще раз." };
+  }
+}
+
+export async function updateUserInfo(body: Prisma.UserUpdateInput){
+  try {
+    const currentUser = await getUserSession();
+
+    if (!currentUser) {
+      throw new Error("Не знайдено сесію користувача. Будь ласка, спробуйте ще раз.");
+    }
+
+    const findUser = await prisma.user.findFirst({
+      where: {
+        id: Number(currentUser.id),
+      },
+    });
+
+    await prisma.user.update({
+      where:{
+        id: Number(currentUser.id),
+      },
+      data: {
+        fullName: body.fullName,
+        email: body.email,
+        password: body.password ? hashSync(body.password as string, 10) : findUser?.password,
+      }
+    });
+  }
+  catch (error) {
+    console.log("[Update user] Server action error:", error);
+    throw error;
   }
 }
