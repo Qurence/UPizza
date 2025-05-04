@@ -1,13 +1,15 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import React from "react";
 import { Container } from "./container";
 import Image from "next/image";
-import { Button } from "../ui";
-import { User } from "lucide-react";
 import Link from "next/link";
 import { SearchInput } from "./search-input";
 import { ThemeSwitcher } from "./theme-switcher";
 import { CartButton } from "./cart-button";
+import { ProfileButton } from "./profile-button";
+import { AuthModal } from "./modals";
 
 interface Props {
   hasSearch?: boolean;
@@ -15,7 +17,13 @@ interface Props {
   className?: string;
 }
 
-export const Header: React.FC<Props> = ({ hasSearch = true, hasCart = true, className }) => {
+export const Header: React.FC<Props> = ({
+  hasSearch = true,
+  hasCart = true,
+  className,
+}) => {
+  const [openAuthModal, setopenAuthModall] = React.useState(false);
+  // console.log(session, 999);
   return (
     <div className={cn("border-b border-muted", className)}>
       <div>
@@ -35,17 +43,18 @@ export const Header: React.FC<Props> = ({ hasSearch = true, hasCart = true, clas
             </div>
           </Link>
 
-          {hasSearch && <div className="mx-10 flex-1">
-            <SearchInput />
-          </div>}
+          {hasSearch && (
+            <div className="mx-10 flex-1">
+              <SearchInput />
+            </div>
+          )}
 
           {/* Правая часть */}
           <div className="flex items-center gap-3">
             <ThemeSwitcher />
-            <Button variant={"outline"} className="flex items-center gap-1">
-              <User size={16} />
-              Увійти
-            </Button>
+
+            <AuthModal open={openAuthModal} onClose={() => setopenAuthModall(false)} />
+            <ProfileButton onClickSignIn={() => setopenAuthModall(true)} />
 
             {hasCart && <CartButton />}
           </div>

@@ -35,6 +35,7 @@
     "lucide-react": "^0.468.0",
     "next": "15.1.0",
     "next-auth": "^4.24.11",
+    "nextjs-toploader": "^3.8.16",
     "prisma": "^6.0.1",
     "qs": "^6.13.1",
     "react": "^19.0.0",
