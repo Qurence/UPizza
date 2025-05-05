@@ -1,4 +1,5 @@
 import { prisma } from "../../prisma/prisma-client";
+
 export interface GetSearchParams {
   query?: string;
   sortBy?: string;
@@ -12,14 +13,14 @@ export interface GetSearchParams {
 const DEFAULT_MIN_PRICE = 0;
 const DEFAULT_MAX_PRICE = 1000;
 
-export const findPizzas = async (param: GetSearchParams) => {
-  const params = await param; // Извлекаем params FIX Error: Route "/" used `searchParams.ingredients`. `searchParams` should be awaited before being used.
-  const sizes = params.sizes?.split(",").map(Number);
-  const pizzaTypes = params.pizzaTypes?.split(",").map(Number);
-  const ingredientsIdArr = params.ingredients?.split(",").map(Number);
+export const findPizzas = async (params: Promise<GetSearchParams> | GetSearchParams) => {
+  const searchParams = await Promise.resolve(params);
+  const sizes = searchParams.sizes?.split(",").map(Number);
+  const pizzaTypes = searchParams.pizzaTypes?.split(",").map(Number);
+  const ingredientsIdArr = searchParams.ingredients?.split(",").map(Number);
 
-  const minPrice = Number(params.priceFrom) || DEFAULT_MIN_PRICE;
-  const maxPrice = Number(params.priceTo) || DEFAULT_MAX_PRICE;
+  const minPrice = Number(searchParams.priceFrom) || DEFAULT_MIN_PRICE;
+  const maxPrice = Number(searchParams.priceTo) || DEFAULT_MAX_PRICE;
 
   const categories = await prisma.category.findMany({
     include: {
