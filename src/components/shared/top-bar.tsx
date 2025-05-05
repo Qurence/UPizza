@@ -16,7 +16,7 @@ export const TopBar: React.FC<Props> = ({ categories, className }) => {
   return (
     <div 
       className={cn(
-        'bg-[hsl(var(--background))] py-5 shadow-lg shadow-black/5 z-10',
+        'bg-[hsl(var(--background))] py-5 z-10',
         className
       )}
     >
