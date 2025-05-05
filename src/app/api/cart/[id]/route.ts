@@ -2,17 +2,23 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../../prisma/prisma-client";
 import { updateCartTotalAmount } from "@/lib/update-cart-total-amount";
 
+type RouteContext = {
+  params: {
+    id: string;
+  };
+};
+
 // export async function PATCH( req: NextRequest, { params }: { params: { id: string } } ) {
 //   try {
 
 export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: RouteContext
 ) {
   try {
-    const id = Number(params.id);
-    const data = (await req.json()) as { quantity: number };
-    const token = req.cookies.get("cartToken")?.value;
+    const id = Number(context.params.id);
+    const data = (await request.json()) as { quantity: number };
+    const token = request.cookies.get("cartToken")?.value;
 
     if (!token) {
       return NextResponse.json({ error: "Cart token not found" });
@@ -50,12 +56,12 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: RouteContext
 ) {
   try {
-    const id = Number(params.id);
-    const token = req.cookies.get("cartToken")?.value;
+    const id = Number(context.params.id);
+    const token = request.cookies.get("cartToken")?.value;
 
     if (!token) {
       return NextResponse.json({ error: "Cart token not found" });
