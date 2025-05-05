@@ -10,6 +10,7 @@ import { TFormRegisterValues, formRegisterSchema } from './schemas';
 import toast from 'react-hot-toast';
 import { registerUser } from '@/app/actions';
 import { FormInput } from '@/components/shared/form-components';
+import { signIn } from 'next-auth/react';
 
 interface Props {
   onClose?: VoidFunction;
@@ -35,19 +36,29 @@ export const RegisterForm: React.FC<Props> = ({ onClose, onClickLogin }) => {
         password: data.password,
       });
 
-      toast.error('Регистрация успешна 📝. Подтвердите свою почту', {
+      // Автоматический вход после успешной регистрации
+      const result = await signIn('credentials', {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        throw new Error(result.error);
+      }
+
+      toast.success('Регистрация успешна! Вы авторизованы.', {
         icon: '✅',
       });
 
-      onClose?.();
+      // Перенаправление на роут /api/auth/verify
+      window.location.href = '/api/auth/verify';
     } catch (error) {
-      return toast.error(`Неверный E-Mail или пароль ${error}`, {
+      return toast.error(`Неверный E-Mail или пароль: ${error}`, {
         icon: '❌',
       });
     }
   };
-
-  console.log(form.formState);
 
   return (
     <FormProvider {...form}>

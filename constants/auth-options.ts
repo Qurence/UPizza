@@ -55,9 +55,9 @@ export const authOptions: AuthOptions = {
           return null;
         }
 
-        if (!findUser.verified) {
-          return null;
-        }
+        // if (!findUser.verified) {
+        //   throw new Error('Пошта не підтверджена. Перевірте свою електронну пошту.');
+        // }
 
         return{
           id: findUser.id,

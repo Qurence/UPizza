@@ -186,11 +186,11 @@ export async function registerUser(body: Prisma.UserCreateInput) {
     });
 
     if (user) {
-      if (!user.verified) {
-        throw new Error(
-          "Пошта не підтверджена. Перевірте свою електронну пошту."
-        );
-      }
+      // if (!user.verified) {
+      //   throw new Error(
+      //     "Пошта не підтверджена. Перевірте свою електронну пошту."
+      //   );
+      // }
       throw new Error("Користувач з таким E-Mail вже існує.");
     }
 
@@ -199,25 +199,27 @@ export async function registerUser(body: Prisma.UserCreateInput) {
         email: body.email,
         fullName: body.fullName,
         password: hashSync(body.password as string, 10),
+        verified: new Date(),
       },
     });
 
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    // Удаляем создание и отправку кода подтверждения
+    // const code = Math.floor(100000 + Math.random() * 900000).toString();
 
-    await prisma.verificationCode.create({
-      data: {
-        code,
-        userId: createdUser.id,
-      },
-    });
+    // await prisma.verificationCode.create({
+    //   data: {
+    //     code,
+    //     userId: createdUser.id,
+    //   },
+    // });
 
-    await sendEmail(
-      createdUser.email,
-      "UPizza | 📝 Підтвердження реєстрації",
-      VerificationUserTemplate({
-        code: code,
-      })
-    );
+    // await sendEmail(
+    //   createdUser.email,
+    //   "UPizza | 📝 Підтвердження реєстрації",
+    //   VerificationUserTemplate({
+    //     code: code,
+    //   })
+    // );
   } catch (error) {
     console.log("[Register user] Server action error:", error);
     throw error;
