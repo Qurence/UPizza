@@ -2,21 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../../prisma/prisma-client";
 import { updateCartTotalAmount } from "@/lib/update-cart-total-amount";
 
-type RouteContext = {
-  params: {
-    id: string;
-  };
-};
-
-// export async function PATCH( req: NextRequest, { params }: { params: { id: string } } ) {
-//   try {
-
 export async function PATCH(
   request: NextRequest,
-  context: RouteContext
+  { params }: { params: { id: string } }
 ) {
   try {
-    const id = Number(context.params.id);
+    const id = Number(params.id);
     const data = (await request.json()) as { quantity: number };
     const token = request.cookies.get("cartToken")?.value;
 
@@ -57,10 +48,10 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  context: RouteContext
+  { params }: { params: { id: string } }
 ) {
   try {
-    const id = Number(context.params.id);
+    const id = Number(params.id);
     const token = request.cookies.get("cartToken")?.value;
 
     if (!token) {
