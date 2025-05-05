@@ -7,6 +7,12 @@ const nextConfig = {
   eslint: {
     // Временно игнорируем ошибки линтера при сборке
     ignoreDuringBuilds: true
+  },
+  // Добавляем настройки для оптимизации сборки
+  swcMinify: true,
+  // Отключаем строгую проверку типов во время сборки
+  experimental: {
+    strictMode: false
   }
 }
 

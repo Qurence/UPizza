@@ -17,7 +17,7 @@ import {
 } from "@/../constants/checkout-form-schema";
 import { createOrder } from "@/app/actions";
 import toast from "react-hot-toast";
-import React from "react";
+import React, { Suspense } from "react";
 import { useSession } from "next-auth/react";
 import { Api } from "../../../../services/api-client";
 // import { loadGetInitialProps } from "next/dist/shared/lib/utils";
@@ -50,6 +50,14 @@ function postToWayForPay(paymentData: Record<string, any>) {
 }
 
 export default function CheckoutPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CheckoutContent />
+    </Suspense>
+  );
+}
+
+function CheckoutContent() {
   const [submitting, setSubmitting] = React.useState(false);
   const { totalAmount, updateItemQuantity, items, removeCartItem, loading } = useCart();
   const { data: session } = useSession();  
