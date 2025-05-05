@@ -39,7 +39,7 @@ export const AddressInput: React.FC<AddressInputProps> = ({
 
   useEffect(() => {
     const loader = new Loader({
-      apiKey: "AIzaSyCwYhhUfQFH7hM8cuvb9JlLuN2QCcGyvtI", // Замените на ваш ключ
+      apiKey: "AIzaSyCwYhhUfQFH7hM8cuvb9JlLuN2QCcGyvtI", 
       version: "weekly",
       libraries: ["places"],
     });

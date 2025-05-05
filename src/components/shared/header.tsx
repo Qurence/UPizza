@@ -10,6 +10,8 @@ import { ThemeSwitcher } from "./theme-switcher";
 import { CartButton } from "./cart-button";
 import { ProfileButton } from "./profile-button";
 import { AuthModal } from "./modals";
+import { useRouter, useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface Props {
   hasSearch?: boolean;
@@ -23,6 +25,20 @@ export const Header: React.FC<Props> = ({
   className,
 }) => {
   const [openAuthModal, setopenAuthModall] = React.useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  React.useEffect(() => {
+    if (searchParams.has("verified")) {
+      setTimeout(() => {
+        router.replace('/');
+        toast.success("Ваша пошта підтверджена", {
+          icon: "✅",
+        });
+      }, 500);
+    }
+  }, [router, searchParams]);
+
   // console.log(session, 999);
   return (
     <div className={cn("border-b border-muted", className)}>
