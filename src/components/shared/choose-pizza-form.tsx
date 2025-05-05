@@ -1,5 +1,4 @@
- 
- import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import React from "react";
 import { PizzaImage } from "./pizza-image";
 import { Title } from "./title";
@@ -40,18 +39,15 @@ export const ChoosePizzaForm: React.FC<Props> = ({
     if (currentItemId) {
       onSubmit(currentItemId, Array.from(selectedIngredients));
     }
-    // console.log({
-    //   size,
-    //   type,
-    //   ingredients: selectedIngredients,
-    // });
   };
 
   return (
-    <div className={cn(className, "bg-[hsl(var(--popover))] rounded-[18px] flex flex-1")}>
-      <PizzaImage imageUrl={imageUrl} size={size} />
+    <div className={cn(className, "bg-[hsl(var(--popover))] rounded-[18px] flex flex-col md:flex-row flex-1 overflow-hidden")}>
+      <div className="p-4 md:p-0 flex justify-center items-center md:flex-1 bg-[hsl(var(--popover))]">
+        <PizzaImage imageUrl={imageUrl} size={size} />
+      </div>
 
-      <div className="w-[490px] bg-[hsl(var(--muted))] p-7 rounded-r-[18px]">
+      <div className="w-full md:w-[490px] bg-[hsl(var(--muted))] p-4 md:p-7 rounded-b-[18px] md:rounded-b-none md:rounded-r-[18px]">
         <Title text={name} size="md" className="font-extrabold mb-1" />
 
         <p className="text-gray-400">{textDetaills}</p>
@@ -70,8 +66,8 @@ export const ChoosePizzaForm: React.FC<Props> = ({
           />
         </div>
 
-        <div className="bg-[hsl(var(--muted))] p-5 rounded-md h-[420px] overflow-auto scrollbar mt-5">
-          <div className="grid grid-cols-3 gap-3">
+        <div className="bg-[hsl(var(--muted))] p-3 md:p-5 rounded-md h-[250px] md:h-[350px] overflow-auto scrollbar mt-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
             {ingredients.map((ingredient) => (
               <IngredientItem
                 key={ingredient.id}
@@ -88,7 +84,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
         <Button
           loading={loading}
           onClick={handleClickAdd}
-          className="h-[55px] px-10 text-white rounded-[18px] w-full mt-10"
+          className="h-[55px] px-10 text-white rounded-[18px] w-full mt-5 md:mt-10"
         >
           Додати до кошику за {totalPrice} ₴
         </Button>

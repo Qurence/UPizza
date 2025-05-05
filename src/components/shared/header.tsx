@@ -52,37 +52,74 @@ function HeaderContent({ hasSearch = true, hasCart = true, className }: Props) {
   return (
     <div className={cn("border-b border-muted", className)}>
       <div>
-        <Container className="flex items-center justify-between py-8">
-          {/* Левая часть */}
-          <Link href={"/"}>
-            <div className="flex items-center gap-4">
-              <Image src="/logo.png" alt="Logo" width={35} height={35} />
-              <div>
-                <h1 className="text-2xl uppercase font-black">
-                  <span style={{ color: "#fe5f00" }}>U</span>Pizza
-                </h1>
-                <p className="text-sm text-gray-400 leading-3">
-                  смачніше вже нікуди
-                </p>
+        <Container>
+          {/* Десктопная версия: лого, поиск и кнопки в одной строке */}
+          <div className="hidden md:flex items-center justify-between py-6">
+            {/* Левая часть - лого */}
+            <Link href={"/"}>
+              <div className="flex items-center gap-4">
+                <Image src="/logo.png" alt="Logo" width={35} height={35} />
+                <div>
+                  <h1 className="text-2xl uppercase font-black">
+                    <span style={{ color: "#fe5f00" }}>U</span>Pizza
+                  </h1>
+                  <p className="text-sm text-gray-400 leading-3">
+                    смачніше вже нікуди
+                  </p>
+                </div>
+              </div>
+            </Link>
+
+            {/* Центральная часть - поиск */}
+            {hasSearch && (
+              <div className="mx-10 flex-1">
+                <SearchInput className="w-full" />
+              </div>
+            )}
+
+            {/* Правая часть - действия пользователя */}
+            <div className="flex items-center gap-3">
+              <ThemeSwitcher />
+              <ProfileButton onClickSignIn={() => setopenAuthModall(true)} />
+              {hasCart && <CartButton />}
+            </div>
+          </div>
+
+          {/* Мобильная версия: лого и кнопки в первой строке, поиск во второй */}
+          <div className="md:hidden">
+            <div className="flex items-center justify-between py-4">
+              {/* Левая часть - лого */}
+              <Link href={"/"}>
+                <div className="flex items-center gap-2">
+                  <Image src="/logo.png" alt="Logo" width={30} height={30} />
+                  <div>
+                    <h1 className="text-xl uppercase font-black">
+                      <span style={{ color: "#fe5f00" }}>U</span>Pizza
+                    </h1>
+                    <p className="text-xs text-gray-400 leading-3">
+                      смачніше вже нікуди
+                    </p>
+                  </div>
+                </div>
+              </Link>
+
+              {/* Правая часть - действия пользователя */}
+              <div className="flex items-center gap-2">
+                <ThemeSwitcher />
+                <ProfileButton onClickSignIn={() => setopenAuthModall(true)} />
+                {hasCart && <CartButton />}
               </div>
             </div>
-          </Link>
 
-          {hasSearch && (
-            <div className="mx-10 flex-1">
-              <SearchInput />
-            </div>
-          )}
-
-          {/* Правая часть */}
-          <div className="flex items-center gap-3">
-            <ThemeSwitcher />
-
-            <AuthModal open={openAuthModal} onClose={() => setopenAuthModall(false)} />
-            <ProfileButton onClickSignIn={() => setopenAuthModall(true)} />
-
-            {hasCart && <CartButton />}
+            {/* Строка поиска только на мобильных */}
+            {hasSearch && (
+              <div className="pb-4 w-full">
+                <SearchInput className="w-full" defaultExpanded={true} />
+              </div>
+            )}
           </div>
+
+          <AuthModal open={openAuthModal} onClose={() => setopenAuthModall(false)} />
         </Container>
       </div>
     </div>

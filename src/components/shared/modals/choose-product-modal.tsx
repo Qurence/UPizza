@@ -3,9 +3,9 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { ProductWithRelations } from "../../../../@types/prisma";
 import { ProductForm } from "../product-form";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 interface Props {
   product: ProductWithRelations;
@@ -14,6 +14,10 @@ interface Props {
 
 export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
   const router = useRouter();
+
+  if (!product) {
+    return null;
+  }
 
   // const onAddProduct = () => {
   //   try {
@@ -43,21 +47,18 @@ export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
   // };
 
   return (
-    <div className={className}>
-      <Dialog open={Boolean(product)} onOpenChange={() => router.back()}>
-        <DialogContent
-          className={cn(
-            "p-0 w-[1060px] max-w-[1060px] min-h-[500px]  bg-[hsl(var(--popover))] overflow-hideden",
-            className
-          )}
-        >
-          <VisuallyHidden>
-            <DialogTitle>Dialog Title</DialogTitle>
-          </VisuallyHidden>
-
-          <ProductForm product={product} onSubmit={router.back} />
-        </DialogContent>
-      </Dialog>
-    </div>
+    <Dialog open={true} onOpenChange={() => router.back()}>
+      <DialogContent 
+        className={cn(
+          "p-0 w-[92%] max-h-[80vh] sm:max-h-[85vh] sm:w-[85vw] md:w-[1060px] max-w-[1060px] bg-[hsl(var(--popover))] overflow-auto",
+          className
+        )}
+      >
+        <VisuallyHidden>
+          <DialogTitle>{product.name}</DialogTitle>
+        </VisuallyHidden>
+        <ProductForm product={product} onSubmit={() => router.back()} />
+      </DialogContent>
+    </Dialog>
   );
 };

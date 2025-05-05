@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 import { cn } from '@/lib/utils';
@@ -9,34 +11,49 @@ interface Props {
 }
 
 export const SortPopup: React.FC<Props> = ({ className }) => {
+  const [selected, setSelected] = React.useState('популярное');
+
+  const items = [
+    { text: 'Сначала популярное', value: 'популярное' },
+    { text: 'Сначала недорогие', value: 'недорогие' },
+    { text: 'Сначала дорогие', value: 'дорогие' },
+    { text: 'С лучшей оценкой', value: 'лучшие' },
+  ];
+
+  const handleSelect = (value: string) => {
+    setSelected(value);
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
         <div
           className={cn(
-            'inline-flex items-center gap-1 bg-[hsl(var(--muted))] px-5 h-[52px] rounded-2xl cursor-pointer',
+            'inline-flex w-full items-center justify-between gap-1 bg-[hsl(var(--muted))] px-4 h-[52px] rounded-2xl cursor-pointer',
             className,
           )}>
-          <ArrowUpDown className="w-4 h-4" />
-          <b>Сортировка:</b>
+          <div className="flex items-center gap-2">
+            <ArrowUpDown className="w-4 h-4" />
+            <b>Сортировка:</b>
+          </div>
 
-          <b className="text-primary">популярное</b>
+          <b className="text-primary">{selected}</b>
         </div>
       </PopoverTrigger>
-      <PopoverContent className="w-[240px]">
-        <ul>
-          <li className="hover:bg-secondary hover:text-primary p-2 px-4 cursor-pointer rounded-md">
-            Сначала популярное
-          </li>
-          <li className="hover:bg-secondary hover:text-primary p-2 px-4 cursor-pointer rounded-md">
-            Сначала недорогие
-          </li>
-          <li className="hover:bg-secondary hover:text-primary p-2 px-4 cursor-pointer rounded-md">
-            Сначала дорогие
-          </li>
-          <li className="hover:bg-secondary hover:text-primary p-2 px-4 cursor-pointer rounded-md">
-            С лучшей оценкой
-          </li>
+      <PopoverContent className="w-full">
+        <ul className="space-y-1">
+          {items.map((item) => (
+            <li 
+              key={item.value}
+              className={cn(
+                "hover:bg-secondary hover:text-primary p-2 px-4 cursor-pointer rounded-md",
+                selected === item.value && "bg-secondary text-primary font-medium"
+              )}
+              onClick={() => handleSelect(item.value)}
+            >
+              {item.text}
+            </li>
+          ))}
         </ul>
       </PopoverContent>
     </Popover>
