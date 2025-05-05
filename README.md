@@ -91,7 +91,7 @@ npm run dev
 ---
 
 <a id="english"></a>
-# ��🇧 English version
+# en English version
 
 Modern web application for ordering pizza, built using advanced web development technologies.
 
