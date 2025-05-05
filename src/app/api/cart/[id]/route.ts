@@ -5,10 +5,11 @@ import { updateCartTotalAmount } from "@/lib/update-cart-total-amount";
 // export async function PATCH( req: NextRequest, { params }: { params: { id: string } } ) {
 //   try {
 
-export async function PATCH( req: NextRequest, context: { params: { id: string } } ) { 
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
-    const params = await context.params; // Извлекаем params
-
     const id = Number(params.id);
     const data = (await req.json()) as { quantity: number };
     const token = req.cookies.get("cartToken")?.value;
@@ -50,10 +51,9 @@ export async function PATCH( req: NextRequest, context: { params: { id: string }
 
 export async function DELETE(
   req: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const params = await context.params; // Извлекаем params
     const id = Number(params.id);
     const token = req.cookies.get("cartToken")?.value;
 
