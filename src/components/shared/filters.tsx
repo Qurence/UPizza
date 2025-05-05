@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Title } from './title';
 import { Input } from '../ui';
 import { RangeSlider } from './range-slider';
@@ -11,8 +11,15 @@ interface Props {
   className?: string;
 }
 
-
 export const Filters: React.FC<Props> = ({ className }) => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <FiltersContent className={className} />
+    </Suspense>
+  );
+};
+
+function FiltersContent({ className }: Props) {
   const {ingredients, loading} = useIngredients();
   const filters = useFilters();
 
@@ -100,4 +107,4 @@ export const Filters: React.FC<Props> = ({ className }) => {
       />
     </div>
   );
-};
+}

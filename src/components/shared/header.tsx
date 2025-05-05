@@ -12,6 +12,7 @@ import { ProfileButton } from "./profile-button";
 import { AuthModal } from "./modals";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
+import { Suspense } from "react";
 
 interface Props {
   hasSearch?: boolean;
@@ -24,6 +25,14 @@ export const Header: React.FC<Props> = ({
   hasCart = true,
   className,
 }) => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HeaderContent hasSearch={hasSearch} hasCart={hasCart} className={className} />
+    </Suspense>
+  );
+};
+
+function HeaderContent({ hasSearch = true, hasCart = true, className }: Props) {
   const [openAuthModal, setopenAuthModall] = React.useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -78,6 +87,6 @@ export const Header: React.FC<Props> = ({
       </div>
     </div>
   );
-};
+}
 
 export default Header;
